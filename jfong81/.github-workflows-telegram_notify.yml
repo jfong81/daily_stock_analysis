@@ -1,0 +1,21 @@
+name: Telegram Notification
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: send custom message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_ID }}
+          token: ${{ secrets.TELEGRAM_TOK }}
+          message: |
+            🚀 Repository: ${{ github.repository }}
+            Event: New code push by ${{ github.actor }}
+            Commit: ${{ github.event.commits[0].message }}
+            Link: https://github.com{{ github.repository }}/commit/${{ github.sha }}
